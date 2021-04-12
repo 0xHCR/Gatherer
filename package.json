@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/0xHCR/Gatherer#readme",
   "dependencies": {
+    "@aragon/connect-thegraph": "^0.7.0",
     "dotenv": "^8.2.0",
-    "node-fetch": "^2.6.1"
+    "graphql-tag": "^2.11.0"
   }
 }
