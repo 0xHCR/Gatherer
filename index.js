@@ -1,9 +1,9 @@
-const dotenv = require('dotenv');
+const dotenv = require('dotenv')
 
 const gql = require('graphql-tag')
 const { GraphQLWrapper } = require('@aragon/connect-thegraph')
 
-dotenv.config();
+dotenv.config()
 
 /* saving LP queries for later
 const USER_POOLS = gql`
@@ -84,12 +84,22 @@ async function getTransactions(message) {
   const result = await graphqlClient.performQuery(USER_TRANSACTIONS)
 
   if (!result.data) {
-    console.log('shit');
+    console.log('shit')
     return
   }
 
-  console.log(result.data);
-
+  return result
 }
 
-getTransactions();
+async function handleSwapData() {
+  let swaps = await getTransactions()
+  swaps.data.swaps.forEach(swap => {
+    if(swap.amount0Out == 0) {
+      console.log(`From ${swap.amount0In} ${swap.pair.token0.symbol} to ${swap.amount0Out} ${swap.pair.token1.symbol}`)
+    } else {
+      console.log(`From ${swap.amount0Out} ${swap.pair.token0.symbol} to ${swap.amount1In} ${swap.pair.token1.symbol}`)
+    }
+  })
+}
+
+handleSwapData()
