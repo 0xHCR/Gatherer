@@ -79,7 +79,7 @@ const USER_TRANSACTIONS = gql`
   }
 `
 
-async function getTransactions(message) {
+async function getUniTransactions() {
   const graphqlClient = new GraphQLWrapper(process.env.SUBGRAPH_URI)
   const result = await graphqlClient.performQuery(USER_TRANSACTIONS)
 
@@ -92,12 +92,12 @@ async function getTransactions(message) {
 }
 
 async function handleSwapData() {
-  let swaps = await getTransactions()
+  let swaps = await getUniTransactions()
   swaps.data.swaps.forEach(swap => {
     if(swap.amount0Out == 0) {
-      console.log(`From ${swap.amount0In} ${swap.pair.token0.symbol} to ${swap.amount0Out} ${swap.pair.token1.symbol}`)
+      console.log(`From ${swap.amount0In} ${swap.pair.token0.symbol} to ${swap.amount1Out} ${swap.pair.token1.symbol}, total: ${swap.amountUSD}`)
     } else {
-      console.log(`From ${swap.amount0Out} ${swap.pair.token0.symbol} to ${swap.amount1In} ${swap.pair.token1.symbol}`)
+      console.log(`From ${swap.amount1In} ${swap.pair.token1.symbol} to ${swap.amount0Out} ${swap.pair.token0.symbol}, total: ${swap.amountUSD}`)
     }
   })
 }
